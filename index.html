@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>PratoCerto MVP</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+<h1><svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><circle cx="14" cy="14" r="13" fill="#ea5b0c"/><circle cx="14" cy="14" r="8" fill="none" stroke="#fff" stroke-width="2"/><path d="M10 14.5l3 3 5-6" stroke="#fff" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>PratoCerto</h1>
+<p>Refeições feitas para você, no horário que você escolher.</p><span class="demo">Demonstração: 1 s = 1 min</span>
+</header>
+<nav aria-label="Telas"><button data-v="pedir" aria-current="page">Pedir</button><button data-v="acomp">Acompanhar</button><button data-v="sup">Suporte</button><button data-v="perfil">Perfil</button><button data-v="op">Operação</button></nav>
+<main id="v-pedir">
+<div style="display:grid;gap:16px;align-content:start">
+<section>
+<h2>Cardápio de hoje</h2>
+<p id="restinfo" class="hint"></p>
+<div id="menu"></div>
+</section>
+<section>
+<h2>Seu pedido</h2>
+<div id="banner"></div>
+<div id="cart" class="hint">Escolha uma refeição para começar.</div>
+<label for="forma">Forma de pagamento</label>
+<select id="forma"><option>Pix</option><option>Cartão de crédito</option><option>Cartão de débito</option></select>
+<label for="cup">Cupom</label>
+<div class="row" style="margin-top:0"><input type="text" id="cup" placeholder="Ex.: PRATO10" style="flex:1"><button data-act="cupom">Aplicar</button></div>
+<div class="tot"><span>Total</span><span id="total">R$ 0,00</span></div>
+<button class="p" id="pay" disabled>Pagar e confirmar</button>
+<div id="msg" class="hint" style="margin-top:10px"></div>
+</section>
+</div>
+<div style="display:grid;gap:16px;align-content:start">
+<section>
+<h2>Painel da operação</h2>
+<div id="stages"></div>
+<div class="grid" style="margin-top:12px">
+<div class="m"><span>Pedidos por hora</span><strong id="m1">0</strong></div>
+<div class="m"><span>Pagamentos não confirmados</span><strong id="m2">0</strong></div>
+<div class="m"><span>Vendidos sem estoque</span><strong id="m3">0</strong></div>
+<div class="m"><span>Tempo médio de entrega</span><strong id="m4">-</strong></div>
+<div class="m" style="grid-column:span 2"><span>Entregas realizadas no prazo</span><strong id="m5">-</strong></div>
+</div>
+<div class="row"><button id="reset">Reiniciar</button></div>
+<ul class="log" id="log"></ul>
+</section>
+</div>
+</main>
+<main id="v-acomp" class="one" hidden><section><h2>Acompanhar pedido</h2><div id="acomp"></div></section></main>
+<main id="v-sup" class="one" hidden>
+<section><h2>Suporte</h2>
+<div id="supst" class="banner ok"></div>
+<details><summary>Fui cobrado, mas não vi a confirmação</summary><p class="hint">Se o pagamento não for confirmado, o pedido não é criado e você não é cobrado. Se aparecer uma cobrança sem pedido, envie um chamado que devolvemos o valor.</p></details>
+<details><summary>Quanto tempo leva a entrega?</summary><p class="hint">O prazo real aparece na tela Pedir, antes do pagamento, e é atualizado conforme a fila.</p></details>
+<details><summary>O prato não atende minha restrição alimentar</summary><p class="hint">Cadastre suas restrições na aba Perfil. O cardápio bloqueia os pratos que não servem para você.</p></details>
+<details><summary>Meu pedido atrasou</summary><p class="hint">Veja a etapa atual na aba Acompanhar. Se passar do prazo, abra um chamado abaixo.</p></details>
+<label for="mot">Qual é o problema?</label>
+<select id="mot"><option value="atraso">Pedido atrasado</option><option value="cobranca">Cobrança sem confirmação</option><option value="item">Item incorreto</option><option value="outro">Outro</option></select>
+<label for="det">Detalhes</label>
+<textarea id="det" rows="3"></textarea>
+<div class="row"><button class="p" data-act="chamado">Enviar chamado</button></div>
+<div id="supmsg" class="hint" style="margin-top:10px"></div>
+</section>
+<section><h2>Seus chamados</h2><div id="tks" class="hint">Nenhum chamado aberto.</div></section>
+</main>
+<main id="v-perfil" class="one" hidden>
+<section><h2>Cadastro e preferências</h2>
+<label for="nome">Nome</label><input type="text" id="nome" placeholder="Seu nome">
+<label for="bairro">Bairro de entrega</label>
+<select id="bairro"><option>Boa Viagem</option><option>Pina</option><option>Imbiribeira</option><option>Setúbal</option><option>Outro bairro</option></select>
+<label for="hora">Horário da entrega</label>
+<select id="hora"><option>O mais rápido possível</option><option>12:00</option><option>13:00</option><option>19:00</option><option>20:00</option></select>
+<label>Restrições alimentares</label>
+<label class="c"><input type="checkbox" name="rest" value="gluten"> Sem glúten</label>
+<label class="c"><input type="checkbox" name="rest" value="vegano"> Vegano</label>
+<label class="c"><input type="checkbox" name="rest" value="lactose"> Sem lactose</label>
+<div class="row"><button class="p" data-act="perfil">Salvar preferências</button></div>
+<div id="permsg" class="hint" style="margin-top:10px"></div>
+<p class="hint">No lançamento, a entrega fica restrita aos bairros próximos da cozinha. Em bairros fora da área, o pedido é avisado antes do pagamento.</p>
+</section>
+</main>
+<main id="v-op" class="one" hidden><section><h2>Operação (visão da equipe)</h2>
+<div class="stress-panel">
+<h3>Simular aumento da demanda</h3>
+<label for="stressPercent">Aumento: <output id="stressValue" for="stressPercent">50%</output></label>
+<input type="range" id="stressPercent" min="0" max="200" step="10" value="50" aria-describedby="stressHelp">
+<div class="row"><button class="p" data-act="stress">Simular campanha</button></div>
+<p id="stressHelp" class="hint">Base de 30 pedidos. Ajuste de 0% a 200%; por exemplo, 50% simula 45 pedidos. O limite e o estoque determinam quantos serão aceitos.</p>
+<p id="stressResult" class="hint" role="status" aria-live="polite"></p>
+</div>
+<div id="opc"></div></section></main>
+<script src="app.js"></script>
+</body>
+</html>
